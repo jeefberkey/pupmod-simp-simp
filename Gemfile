@@ -41,5 +41,5 @@ group :system_tests do
   gem 'beaker', :git => 'https://github.com/trevor-vaughan/beaker.git', :branch => 'BKR-978-2.51.0'
   # gem 'beaker'
   gem 'beaker-rspec'
-  gem 'simp-beaker-helpers', ENV.fetch('SIMP_BEAKER_HELPERS_VERSION', '~> 1.5')
+  gem 'simp-beaker-helpers', ENV.fetch('SIMP_BEAKER_HELPERS_VERSION', '~> 1.6.1')
 end

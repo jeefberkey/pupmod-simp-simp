@@ -12,7 +12,7 @@ describe 'simp class' do
 
       interfaces.each do |iface|
         if fact_on(host, "ipaddress_#{iface}").strip.empty?
-          on(host, "ifup #{iface}", :accept_all_exit_codes => true)
+          on(host, "ifup #{iface}", :accept_all_exit_codes => true, :run_in_parallel => true )
         end
       end
     end
@@ -62,35 +62,35 @@ ssh::server::conf::authorizedkeysfile: .ssh/authorized_keys
       }
 
       it 'should set up simp_options through hiera' do
-        set_hieradata_on(host, options)
+        set_hieradata_on(host, options, :run_in_parallel => true )
       end
 
       # These boxes have no root password by default...
       it 'should set the root password' do
-        on(hosts, "sed -i 's/enforce_for_root//g' /etc/pam.d/*")
-        on(hosts, 'echo password | passwd root --stdin')
+        on(host, "sed -i 's/enforce_for_root//g' /etc/pam.d/*", :run_in_parallel => true)
+        on(host, 'echo password | passwd root --stdin', :run_in_parallel => true)
       end
 
       it 'should set up needed repositories' do
-        install_package host, 'epel-release'
-        on host, 'curl -s https://packagecloud.io/install/repositories/simp-project/6_X_Dependencies/script.rpm.sh | bash'
+        install_package(host, 'epel-release')
+        on( host, 'curl -s https://packagecloud.io/install/repositories/simp-project/6_X_Dependencies/script.rpm.sh | bash', :run_in_parallel => true)
       end
 
       it 'should put something in portreserve so the service starts' do
         # the portreserve service will fail unless something is configured
-        on host, 'mkdir -p /etc/portreserve'
-        on host, 'echo rndc/tcp > /etc/portreserve/named'
+        on( host, 'mkdir -p /etc/portreserve', {:run_in_parallel => true})
+        on( host, 'echo rndc/tcp > /etc/portreserve/named', {:run_in_parallel => true})
       end
 
       it 'should bootstrap in a few runs' do
-        apply_manifest_on(host, manifest, :accept_all_exit_codes => true)
-        apply_manifest_on(host, manifest, :accept_all_exit_codes => true)
+        apply_manifest_on(host, manifest, :accept_all_exit_codes => true, :run_in_parallel => true )
+        apply_manifest_on(host, manifest, :accept_all_exit_codes => true, :run_in_parallel => true )
         host.reboot
-        apply_manifest_on(host, manifest, :catch_failures => true)
+        apply_manifest_on(host, manifest, :catch_failures => true, :run_in_parallel => true )
       end
 
       it 'should be idempotent' do
-        apply_manifest_on(host, manifest, :catch_changes => true)
+        apply_manifest_on(host, manifest, :catch_changes => true, :run_in_parallel => true )
       end
     end
 
