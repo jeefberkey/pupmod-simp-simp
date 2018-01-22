@@ -26,10 +26,10 @@ describe 'simp' do
                 'server' => 'puppet.bar.baz'
               }
             }
-            os_facts[:server_facts] = {
-              :servername => 'puppet.bar.baz',
-              :serverip   => '1.2.3.4'
-            }
+            # os_facts[:server_facts] = {
+            #   :servername => 'puppet.bar.baz',
+            #   :serverip   => '1.2.3.4'
+            # }
             os_facts
         end
 
