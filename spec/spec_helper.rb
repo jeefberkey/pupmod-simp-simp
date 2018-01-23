@@ -96,6 +96,7 @@ end
 
 RSpec.configure do |c|
   c.default_facts = default_facts
+  c.trusted_server_facts = true
 
   c.mock_framework = :rspec
   c.mock_with :mocha
